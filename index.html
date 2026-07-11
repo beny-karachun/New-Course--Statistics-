@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Exam-focused Probability & Statistics course for Technion 094481, built from recent past exams." />
+  <title>STAT//ACE — 094481 Exam Course</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$']],
+        displayMath: [['$$', '$$']],
+        processEscapes: true
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] },
+      startup: { typeset: false }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#/dashboard" aria-label="STAT ACE home">
+      <span class="brand-mark">S//A</span>
+      <span><strong>STAT//ACE</strong><small>094481 · exam system</small></span>
+    </a>
+    <div class="top-actions">
+      <button class="icon-button" id="searchButton" aria-label="Search course" title="Search (/)" type="button">⌕</button>
+      <div class="streak" title="Study streak"><span>◆</span><b id="streakCount">1</b><small>day</small></div>
+      <button class="avatar" id="resetButton" aria-label="Reset progress" title="Reset progress" type="button">BP</button>
+    </div>
+  </header>
+
+  <aside class="sidebar" aria-label="Course navigation">
+    <nav>
+      <a href="#/dashboard" data-route="dashboard"><span>⌂</span> Dashboard</a>
+      <a href="#/learn" data-route="learn"><span>▤</span> Learn</a>
+      <a href="#/drill" data-route="drill"><span>◎</span> Drill room</a>
+      <a href="#/memory" data-route="memory"><span>◫</span> Memory deck</a>
+      <a href="#/exam" data-route="exam"><span>⚑</span> Exam mode</a>
+      <a href="#/sheet" data-route="sheet"><span>⌘</span> Cheat sheet</a>
+    </nav>
+    <div class="sidebar-note">
+      <span class="eyebrow">YOUR RULE</span>
+      <p>Never calculate before naming the random variable.</p>
+    </div>
+  </aside>
+
+  <main id="app" tabindex="-1"></main>
+
+  <dialog id="searchDialog" class="search-dialog">
+    <form method="dialog" class="search-shell">
+      <div class="search-row"><span>⌕</span><input id="searchInput" autocomplete="off" placeholder="Search Bayes, CLT, regression…" /><button value="cancel" aria-label="Close">×</button></div>
+      <div id="searchResults" class="search-results"></div>
+      <small>Press <kbd>Esc</kbd> to close · <kbd>/</kbd> to search</small>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script defer src="app.js"></script>
+</body>
+</html>
