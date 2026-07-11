@@ -366,21 +366,37 @@ function dashboard(){
 }
 
 function learn(){
-  return `<section class="page">${pageHead("THE CORE PATH","Nine modules. Forty-six applications.","No background assumed: every symbol and model is defined before it is used, then practiced immediately.",`<button class="secondary" onclick="go('sheet')">Open cheat sheet</button>`)}
-  <div class="module-list">${modules.map(m=>{const solved=state.practiceSolved.filter(k=>k.startsWith(`${m.id}:`)).length,total=practiceBanks[m.id]?.length||0;return `<button class="module-row ${state.completed.includes(m.id)?'done':''}" onclick="openLesson('${m.id}')"><span class="module-number">${state.completed.includes(m.id)?'✓':m.n}</span><span class="module-copy"><h3>${m.title}</h3><p>${m.summary}</p></span><span class="module-meta">${solved}/${total} exercises · ${m.weight}</span><span class="module-arrow">→</span></button>`}).join("")}</div></section>`;
+  return `<section class="page">${pageHead("THE CORE PATH","Learn one concept. Prove it twice.","Every module alternates teaching and practice. Each concept is followed by five original/twin technique pairs before the next concept appears.",`<button class="secondary" onclick="go('sheet')">Open cheat sheet</button>`)}
+  <div class="module-list">${modules.map(m=>{const total=conceptExerciseKeys(m.id).length,solved=conceptExerciseKeys(m.id).filter(k=>state.practiceSolved.includes(k)).length;return `<button class="module-row ${state.completed.includes(m.id)?'done':''}" onclick="openLesson('${m.id}')"><span class="module-number">${state.completed.includes(m.id)?'✓':m.n}</span><span class="module-copy"><h3>${m.title}</h3><p>${m.summary}</p></span><span class="module-meta">${solved}/${total} paired exercises · ${m.weight}</span><span class="module-arrow">→</span></button>`}).join("")}</div></section>`;
 }
 
-function practiceBlock(moduleId){
-  const bank=practiceBanks[moduleId] || [];
-  const solvedCount=bank.filter((_,i)=>state.practiceSolved.includes(`${moduleId}:${i}`)).length;
-  return `<section class="practice-lab"><div class="practice-head"><div><span class="eyebrow">APPLY IT NOW</span><h2>Practice lab</h2><p>Commit to an answer before revealing the reasoning.</p></div><div class="practice-score"><strong id="practiceScore-${moduleId}">${solvedCount}/${bank.length}</strong><span>mastered</span></div></div><div class="progress-track practice-track"><i id="practiceBar-${moduleId}" style="width:${bank.length?solvedCount/bank.length*100:0}%"></i></div>
-  <div class="practice-list">${bank.map((q,qi)=>{const key=`${moduleId}:${qi}`,solved=state.practiceSolved.includes(key);return `<div class="practice-card ${solved?'solved':''}" id="practice-${moduleId}-${qi}" data-checked="${solved?'true':'false'}" data-correct="${solved?'true':'false'}"><div class="practice-number">${String(qi+1).padStart(2,'0')}</div><div class="practice-content"><span class="tag ${qi<2?'mint':qi<4?'blue':'hot'}">${qi<2?'warm-up':qi<4?'apply':'exam move'}</span><h3>${q.q}</h3><div class="practice-options">${q.o.map((o,oi)=>`<button class="practice-option ${solved&&oi===q.a?'correct':''}" ${solved?'disabled':''} onclick="selectPractice('${moduleId}',${qi},${oi})"><span>${String.fromCharCode(65+oi)}</span>${o}</button>`).join('')}</div><div class="practice-feedback ${solved?'show':''}" id="practiceFeedback-${moduleId}-${qi}"><strong>${solved?'Mastered — here is the move:':''}</strong>${solved?q.e:''}</div><button class="tiny-button practice-check" id="practiceCheck-${moduleId}-${qi}" ${solved?'disabled':''} onclick="checkPractice('${moduleId}',${qi})">${solved?'Mastered ✓':'Check answer'}</button></div></div>`}).join('')}</div></section>`;
+function conceptExerciseKeys(moduleId){
+  return (window.conceptCourses?.[moduleId]||[]).flatMap((concept,ci)=>concept.pairs.flatMap((_,pi)=>[`${moduleId}:${ci}:${pi}:0`,`${moduleId}:${ci}:${pi}:1`]));
+}
+
+function conceptPracticeBlock(moduleId,conceptIndex,concept){
+  const keys=concept.pairs.flatMap((_,pi)=>[`${moduleId}:${conceptIndex}:${pi}:0`,`${moduleId}:${conceptIndex}:${pi}:1`]);
+  const solvedCount=keys.filter(k=>state.practiceSolved.includes(k)).length,total=keys.length;
+  return `<section class="concept-practice"><div class="practice-head"><div><span class="eyebrow">DELIBERATE PRACTICE</span><h2>${total} exercises · 5 technique pairs</h2><p>Solve the original, then its twin. The surface changes; the method stays.</p></div><div class="practice-score"><strong id="conceptScore-${moduleId}-${conceptIndex}">${solvedCount}/${total}</strong><span>mastered</span></div></div><div class="progress-track practice-track"><i id="conceptBar-${moduleId}-${conceptIndex}" style="width:${solvedCount/total*100}%"></i></div>
+  <div class="pair-list">${concept.pairs.map((p,pi)=>{const pairKeys=[`${moduleId}:${conceptIndex}:${pi}:0`,`${moduleId}:${conceptIndex}:${pi}:1`],pairSolved=pairKeys.filter(k=>state.practiceSolved.includes(k)).length;return `<section class="pair-card ${pairSolved===2?'pair-mastered':''}" id="pair-${moduleId}-${conceptIndex}-${pi}"><header><div><span class="pair-index">PAIR ${String(pi+1).padStart(2,'0')}</span><h3>${p.technique}</h3></div><span class="pair-status" id="pairStatus-${moduleId}-${conceptIndex}-${pi}">${pairSolved}/2</span></header><div class="twin-grid">${p.exercises.map((q,si)=>conceptExerciseCard(moduleId,conceptIndex,pi,si,q)).join('')}</div></section>`}).join('')}</div></section>`;
+}
+
+function conceptExerciseCard(moduleId,ci,pi,si,q){
+  const key=`${moduleId}:${ci}:${pi}:${si}`,solved=state.practiceSolved.includes(key),level=pi===0?'warm-up':pi<3?'apply':pi===3?'challenge':'exam move';
+  return `<article class="twin-exercise ${solved?'solved':''}" id="conceptExercise-${moduleId}-${ci}-${pi}-${si}" data-checked="${solved?'true':'false'}" data-correct="${solved?'true':'false'}"><div class="twin-label"><span class="tag ${si?'blue':'mint'}">${q.label}</span><small>${level}</small></div><h4>${q.q}</h4><div class="practice-options">${q.o.map((o,oi)=>`<button class="practice-option ${solved&&oi===q.a?'correct':''}" ${solved?'disabled':''} onclick="selectConceptExercise('${moduleId}',${ci},${pi},${si},${oi})"><span>${String.fromCharCode(65+oi)}</span>${o}</button>`).join('')}</div><div class="practice-feedback ${solved?'show':''}" id="conceptFeedback-${moduleId}-${ci}-${pi}-${si}">${solved?`<strong>Technique locked:</strong>${q.e}`:''}</div><button class="tiny-button practice-check" id="conceptCheck-${moduleId}-${ci}-${pi}-${si}" ${solved?'disabled':''} onclick="checkConceptExercise('${moduleId}',${ci},${pi},${si})">${solved?'Mastered ✓':'Check answer'}</button></article>`;
+}
+
+function interleavedContent(module){
+  const concepts=window.conceptCourses?.[module.id]||[],sections=module.content.trim().split(/(?=<h2>)/),blocks=[];
+  let cursor=0;
+  concepts.forEach((concept,ci)=>{const take=concept.take===99?sections.length-cursor:concept.take,content=sections.slice(cursor,cursor+take).join('');cursor+=take;blocks.push(`<section class="concept-unit"><header class="concept-unit-head"><span>CONCEPT ${ci+1} OF ${concepts.length}</span><h2>${concept.title}</h2><p>${concept.subtitle}</p></header><div class="concept-teaching">${content}</div>${conceptPracticeBlock(module.id,ci,concept)}</section>`)});
+  return blocks.join('');
 }
 
 function lesson(id){
   const m=modules.find(x=>x.id===id) || modules[0];
   return `<section class="page">${pageHead(`MODULE ${m.n} · ${m.time} MIN`,m.title,m.summary,`<button class="secondary" onclick="go('learn')">← All modules</button>`)}
-  <div class="lesson-layout"><article class="card lesson-body">${m.content}${practiceBlock(m.id)}<div class="section-title"><div><span class="eyebrow">LOCK IT IN</span><h2>Ready to move on?</h2></div></div><button class="primary complete-button" onclick="completeModule('${m.id}')">${state.completed.includes(m.id)?'Completed ✓':'Mark complete & continue →'}</button></article>
+  <div class="lesson-layout"><article class="card lesson-body">${interleavedContent(m)}<div class="section-title"><div><span class="eyebrow">LOCK IT IN</span><h2>Ready to move on?</h2></div></div><button class="primary complete-button" onclick="completeModule('${m.id}')">${state.completed.includes(m.id)?'Completed ✓':'Mark complete & continue →'}</button></article>
   <aside class="lesson-side"><div class="rule-card"><span class="eyebrow">MEMORIZE THIS RULE</span><strong>${m.rule}</strong></div><div class="card"><h3>Exam protocol</h3><p class="muted">1. Name the variable.<br>2. Name the model.<br>3. Write parameters.<br>4. Compute.<br>5. Sanity-check range and direction.</p></div></aside></div></section>`;
 }
 
@@ -449,16 +465,16 @@ window.go=go;
 window.openLesson=id=>go(`lesson/${id}`);
 window.continueLearning=()=>{ const next=modules.find(m=>!state.completed.includes(m.id))||modules[0]; go(`lesson/${next.id}`); };
 window.completeModule=id=>{ if(!state.completed.includes(id)){state.completed.push(id);save();toast("Module complete — progress saved");} const idx=modules.findIndex(m=>m.id===id); if(idx<modules.length-1) setTimeout(()=>go(`lesson/${modules[idx+1].id}`),350); else setTimeout(()=>go("drill"),350); };
-window.selectPractice=(moduleId,questionIndex,optionIndex)=>{
-  const card=$(`#practice-${moduleId}-${questionIndex}`);
+window.selectConceptExercise=(moduleId,ci,pi,si,optionIndex)=>{
+  const card=$(`#conceptExercise-${moduleId}-${ci}-${pi}-${si}`),key=`${moduleId}:${ci}:${pi}:${si}`;
   if(!card || card.dataset.checked==="true") return;
-  state.practiceSelections[`${moduleId}:${questionIndex}`]=optionIndex;
+  state.practiceSelections[key]=optionIndex;
   $$(".practice-option",card).forEach((option,i)=>option.classList.toggle("selected",i===optionIndex));
 };
-window.checkPractice=(moduleId,questionIndex)=>{
-  const key=`${moduleId}:${questionIndex}`,card=$(`#practice-${moduleId}-${questionIndex}`),q=practiceBanks[moduleId][questionIndex];
+window.checkConceptExercise=(moduleId,ci,pi,si)=>{
+  const key=`${moduleId}:${ci}:${pi}:${si}`,card=$(`#conceptExercise-${moduleId}-${ci}-${pi}-${si}`),concept=window.conceptCourses[moduleId][ci],q=concept.pairs[pi].exercises[si];
   if(!card) return;
-  const feedback=$(`#practiceFeedback-${moduleId}-${questionIndex}`),button=$(`#practiceCheck-${moduleId}-${questionIndex}`),options=$$(".practice-option",card);
+  const feedback=$(`#conceptFeedback-${moduleId}-${ci}-${pi}-${si}`),button=$(`#conceptCheck-${moduleId}-${ci}-${pi}-${si}`),options=$$(".practice-option",card);
   if(card.dataset.checked==="true" && card.dataset.correct!=="true"){
     card.dataset.checked="false"; delete state.practiceSelections[key];
     options.forEach(option=>{option.disabled=false;option.classList.remove("selected","correct","wrong")});
@@ -468,13 +484,17 @@ window.checkPractice=(moduleId,questionIndex)=>{
   if(selected===undefined){toast("Choose an answer first");return;}
   const correct=selected===q.a; card.dataset.checked="true"; card.dataset.correct=String(correct);
   options.forEach((option,i)=>{option.disabled=true;if(i===q.a)option.classList.add("correct");else if(i===selected)option.classList.add("wrong")});
-  feedback.innerHTML=`<strong>${correct?'Correct — that move is now yours.':'Close the gap, then retry:'}</strong>${q.e}`; feedback.classList.add("show"); typeset(feedback);
+  feedback.innerHTML=`<strong>${correct?'Correct — now transfer it to the twin.':'Close the gap, then retry:'}</strong><span class="technique-line">Technique: ${concept.pairs[pi].technique}</span>${q.e}`; feedback.classList.add("show"); typeset(feedback);
   if(correct){
     if(!state.practiceSolved.includes(key))state.practiceSolved.push(key);
     card.classList.add("solved"); button.textContent="Mastered ✓"; button.disabled=true; save();
-    const total=practiceBanks[moduleId].length,solved=practiceBanks[moduleId].filter((_,i)=>state.practiceSolved.includes(`${moduleId}:${i}`)).length;
-    $(`#practiceScore-${moduleId}`).textContent=`${solved}/${total}`; $(`#practiceBar-${moduleId}`).style.width=`${solved/total*100}%`;
-    if(solved===total)toast("Practice lab mastered — excellent retrieval");
+    const conceptKeys=concept.pairs.flatMap((_,pairIndex)=>[`${moduleId}:${ci}:${pairIndex}:0`,`${moduleId}:${ci}:${pairIndex}:1`]),solved=conceptKeys.filter(k=>state.practiceSolved.includes(k)).length,total=conceptKeys.length;
+    $(`#conceptScore-${moduleId}-${ci}`).textContent=`${solved}/${total}`; $(`#conceptBar-${moduleId}-${ci}`).style.width=`${solved/total*100}%`;
+    const pairKeys=[`${moduleId}:${ci}:${pi}:0`,`${moduleId}:${ci}:${pi}:1`],pairSolved=pairKeys.filter(k=>state.practiceSolved.includes(k)).length,pairCard=$(`#pair-${moduleId}-${ci}-${pi}`);
+    $(`#pairStatus-${moduleId}-${ci}-${pi}`).textContent=`${pairSolved}/2`; pairCard.classList.toggle("pair-mastered",pairSolved===2);
+    if(pairSolved===1)toast("Original solved — now prove it on the twin");
+    if(pairSolved===2)toast("Technique pair mastered");
+    if(solved===total)toast("Concept mastered — continue to the next concept");
   } else button.textContent="Try again";
 };
 window.selectOption=i=>{ if(state.selected!==null)return; state.selected=i; $$(".option").forEach((el,j)=>el.classList.toggle("selected",j===i)); };

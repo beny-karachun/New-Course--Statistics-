@@ -2,6 +2,8 @@
 
 An exam-first interactive course built from the supplied Technion past-exam archive.
 
+The reusable specification for creating courses in this format is in `COURSE_CREATION_PROMPT.md`.
+
 ## Open the course
 
 Open `index.html` in any modern browser. No installation or account is required. An internet connection is needed to load MathJax from its CDN.
@@ -10,9 +12,10 @@ Progress, mastered lesson exercises, best drill score, and memory-deck reviews a
 
 ## What is included
 
-- 9 zero-background teaching modules with 46 embedded practice exercises
+- 9 zero-background modules organized as 18 interleaved concept units
+- 180 embedded exercises: 90 original/twin technique pairs
 - 15-question mixed drill with worked feedback
-- 28-card repeat-until-automatic memory deck
+- 31-card repeat-until-automatic memory deck
 - 22-minute timed exam sprint
 - searchable course content
 - printable final cheat sheet
