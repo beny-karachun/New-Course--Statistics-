@@ -10,7 +10,7 @@ Progress, mastered lesson exercises, best drill score, and memory-deck reviews a
 
 ## What is included
 
-- 8 focused teaching modules with 40 embedded practice exercises
+- 9 zero-background teaching modules with 46 embedded practice exercises
 - 15-question mixed drill with worked feedback
 - 28-card repeat-until-automatic memory deck
 - 22-minute timed exam sprint
