@@ -136,6 +136,65 @@ const questions = [
   { topic:"Correlation", q:"If $Y=3X-7$ exactly and $\\operatorname{Var}(X)&gt;0$, then $\\operatorname{Corr}(X,Y)$ equals:", o:["$0$","$1$","$3$","It depends on $\\operatorname{Var}(X)$"], a:1, e:"A perfect positive linear transformation has correlation $+1$; scale and shift do not change it." }
 ];
 
+const practiceBanks = {
+  probability: [
+    { q:"Given $P(A)=0.55$, $P(B)=0.40$, and $P(A\\cap B)=0.20$, find $P(A\\cup B)$.", o:["$0.35$","$0.75$","$0.95$","$1.15$"], a:1, e:"Use inclusion–exclusion: $0.55+0.40-0.20=0.75$." },
+    { q:"A disease has prevalence $0.01$. Sensitivity is $0.90$ and the false-positive rate is $0.01$. Approximately what is $P(D\\mid +)$?", o:["$0.083$","$0.476$","$0.900$","$0.990$"], a:1, e:"True positives are $0.9(0.01)=0.009$; all positives are $0.009+0.01(0.99)=0.0189$. Thus $P(D\\mid +)=0.009/0.0189\\approx0.476$." },
+    { q:"If $P(A)=0.30$ and $P(B)=0.40$, what intersection would make $A$ and $B$ independent?", o:["$0$","$0.10$","$0.12$","$0.70$"], a:2, e:"Independence requires $P(A\\cap B)=P(A)P(B)=0.30\\cdot0.40=0.12$." },
+    { q:"A committee of $4$ is sampled from $20$ people, of whom $7$ support a proposal. Which expression gives exactly $3$ supporters?", o:["$\\binom73(7/20)^3(13/20)$","$\\dfrac{\\binom73\\binom{13}1}{\\binom{20}4}$","$\\binom43(7/20)^3(13/20)$","$1-(13/20)^4$"], a:1, e:"Sampling is without replacement, so use the hypergeometric count: favorable committees divided by all committees." },
+    { q:"Independent events satisfy $P(A)=0.7$ and $P(B)=0.6$. Find $P(A^c\\cap B^c)$.", o:["$0.12$","$0.18$","$0.42$","$0.88$"], a:0, e:"Complements remain independent: $P(A^c)P(B^c)=0.3\\cdot0.4=0.12$." }
+  ],
+  distributions: [
+    { q:"A die is rolled until the first six appears. Which distribution models the number of rolls?", o:["$\\operatorname{Bin}(6,1/6)$","$\\operatorname{Geo}(1/6)$","$\\operatorname{Pois}(6)$","$U(1,6)$"], a:1, e:"The finish time moves and stops at the first success, so the model is geometric." },
+    { q:"If $X\\sim\\operatorname{Geo}(0.25)$ counts trials including the success, find $P(X&gt;3)$.", o:["$0.25^3$","$0.75^2$","$0.75^3$","$1-0.75^3$"], a:2, e:"More than three trials means the first three all fail: $(1-p)^3=0.75^3$." },
+    { q:"Calls arrive according to $X\\sim\\operatorname{Pois}(4)$ per hour. What are $E[X]$ and $\\operatorname{Var}(X)$?", o:["$4,2$","$4,4$","$2,4$","$4,16$"], a:1, e:"For a Poisson random variable, both the mean and variance equal $\\lambda$." },
+    { q:"Waiting time is exponential with mean $5$ minutes. What is the rate $\\lambda$?", o:["$5$","$1/5$","$1/25$","$25$"], a:1, e:"For $X\\sim\\operatorname{Exp}(\\lambda)$, $E[X]=1/\\lambda$, so $\\lambda=1/5$." },
+    { q:"If $X\\sim U(2,8)$, what is $\\operatorname{Var}(X)$?", o:["$1/2$","$3$","$6$","$12$"], a:1, e:"$\\operatorname{Var}(X)=(8-2)^2/12=36/12=3$." }
+  ],
+  moments: [
+    { q:"If $E[X]=4$, what is $E[3X-5]$?", o:["$7$","$9$","$12$","$17$"], a:0, e:"Expectation is linear: $3E[X]-5=12-5=7$." },
+    { q:"Suppose $\\operatorname{Var}(X)=4$, $\\operatorname{Var}(Y)=9$, and $\\operatorname{Cov}(X,Y)=2$. Find $\\operatorname{Var}(X+Y)$.", o:["$11$","$13$","$15$","$17$"], a:3, e:"$4+9+2(2)=17$. Covariance contributes twice for a sum." },
+    { q:"If $Y=-2X+10$ exactly and $\\operatorname{Var}(X)&gt;0$, what is $\\rho_{X,Y}$?", o:["$-2$","$-1$","$0$","$1$"], a:1, e:"An exact linear relation has correlation magnitude $1$; the negative slope gives $-1$." },
+    { q:"Independent $X,Y$ have variances $5$ and $7$. Let $W=X+Y$. Find $\\operatorname{Cov}(W,X)$.", o:["$0$","$5$","$7$","$12$"], a:1, e:"$\\operatorname{Cov}(X+Y,X)=\\operatorname{Var}(X)+\\operatorname{Cov}(Y,X)=5+0$." },
+    { q:"Which estimator is unbiased for $\\sigma^2$ under the usual iid assumptions?", o:["$\\frac1n\\sum(X_i-\\bar X)^2$","$\\frac1{n-1}\\sum(X_i-\\bar X)^2$","$\\bar X^2$","$\\frac1n\\sum X_i^2$"], a:1, e:"The correction from $n$ to $n-1$ makes the sample variance unbiased for $\\sigma^2$." }
+  ],
+  clt: [
+    { q:"Independent observations have mean $10$ and standard deviation $3$. For $S_{25}=\\sum_{i=1}^{25}X_i$, what are the mean and standard deviation?", o:["$10,0.6$","$250,15$","$250,75$","$25,15$"], a:1, e:"A sum has mean $25(10)=250$ and standard deviation $3\\sqrt{25}=15$." },
+    { q:"For the same population, what is the standard error of $\\bar X$ when $n=25$?", o:["$0.12$","$0.6$","$3$","$15$"], a:1, e:"The average has standard error $\\sigma/\\sqrt n=3/5=0.6$." },
+    { q:"Which normal event approximates $P(X\\le20)$ for an integer-valued binomial $X$?", o:["$P(Y&lt;19.5)$","$P(Y&lt;20)$","$P(Y&lt;20.5)$","$P(Y&lt;21)$"], a:2, e:"To include the full integer mass at $20$, move the continuous boundary to $20.5$." },
+    { q:"For $X\\sim N(100,15^2)$, approximately what is the $84$th percentile using $z_{0.84}\\approx1$?", o:["$85$","$100$","$115$","$225$"], a:2, e:"Run standardization backward: $x_p=100+1(15)=115$." },
+    { q:"Which statement is correct?", o:["CLT makes every individual $X_i$ normal","If the population is normal, $\\bar X$ is exactly normal for any $n$","A sum has standard deviation $n\\sigma$","CLT requires known $\\sigma$"], a:1, e:"Normal populations produce exactly normal sample means. CLT concerns the distribution of sums or averages, not individual observations." }
+  ],
+  estimation: [
+    { q:"A $95\\%$ interval for a mean with known $\\sigma$ uses which critical value?", o:["$z_{0.95}$","$z_{0.975}$","$t_{0.95,n}$","$z_{0.05}$"], a:1, e:"A two-sided $95\\%$ interval leaves $2.5\\%$ in each tail, so use $z_{0.975}$." },
+    { q:"An interval is $[12,18]$. What are its estimate and margin?", o:["$12,6$","$15,3$","$15,6$","$18,3$"], a:1, e:"The center is $(12+18)/2=15$ and the half-length is $(18-12)/2=3$." },
+    { q:"For a proportion with unknown $p$, $95\\%$ confidence, and margin at most $0.05$, which minimum is correct? Use $z^*=1.96$.", o:["$97$","$196$","$385$","$769$"], a:2, e:"Use the worst case $0.25$: $n\\ge1.96^2(0.25)/0.05^2=384.16$, then round up to $385$." },
+    { q:"A normal sample has $n=12$ and unknown population standard deviation. Which critical distribution is used for a mean interval?", o:["$N(0,1)$","$t_{11}$","$t_{12}$","$\\chi^2_{11}$"], a:1, e:"Unknown $\\sigma$ gives a $t$ interval with $n-1=11$ degrees of freedom." },
+    { q:"A problem requires total confidence-interval length at most $0.08$. Which margin goes into the sample-size formula?", o:["$0.02$","$0.04$","$0.08$","$0.16$"], a:1, e:"Interval length is twice the margin, so $d=0.08/2=0.04$." }
+  ],
+  testing: [
+    { q:"A researcher claims the population mean has decreased from $50$. Choose the alternative.", o:["$H_1:\\mu=50$","$H_1:\\mu\\ne50$","$H_1:\\mu&lt;50$","$H_1:\\bar X&lt;50$"], a:2, e:"‘Decreased’ gives a left-tailed hypothesis about the population parameter $\\mu$." },
+    { q:"A test gives $p=0.032$. What is the decision at $\\alpha=0.05$?", o:["Reject $H_0$","Do not reject $H_0$","Accept $H_0$","Increase the $p$-value"], a:0, e:"Because $0.032&lt;0.05$, reject $H_0$." },
+    { q:"The same data are tested at $\\alpha=0.01$ instead. What happens to the $p$-value?", o:["It becomes smaller","It becomes larger","It stays the same","It becomes $0.01$"], a:2, e:"The $p$-value depends on the data and null model, not on the chosen significance level." },
+    { q:"Failing to reject a false null hypothesis is which error?", o:["Type I","Type II","Power","Significance"], a:1, e:"A Type II error misses a real effect. Its probability is $\\beta$, and power is $1-\\beta$." },
+    { q:"A two-sided test of $H_0:\\mu=10$ at $\\alpha=0.05$ matches which confidence interval rule?", o:["Reject if a $90\\%$ CI contains $10$","Reject if a $95\\%$ CI excludes $10$","Reject if a $99\\%$ CI excludes $0$","Reject if $\\bar X&gt;10$"], a:1, e:"The matching $95\\%$ interval and two-sided $5\\%$ test give the same decision." }
+  ],
+  twosample: [
+    { q:"Blood pressure is measured on the same patients before and after treatment. Which analysis fits?", o:["Two independent proportions","One-sample $t$ on paired differences","Independent pooled $t$","$\\chi^2$ goodness-of-fit"], a:1, e:"Each patient creates one before-minus-after difference, reducing the problem to one sample." },
+    { q:"Independent sample means have variances $4/20$ and $9/30$. What is $\\operatorname{Var}(\\bar X-\\bar Y)$?", o:["$0.1$","$0.5$","$1.0$","$13/50$"], a:1, e:"For independent samples, add the variances: $4/20+9/30=0.2+0.3=0.5$." },
+    { q:"A paired study contains $18$ complete pairs. What are the $t$ degrees of freedom?", o:["$16$","$17$","$18$","$34$"], a:1, e:"A paired test is a one-sample test on $18$ differences, so $df=18-1=17$." },
+    { q:"Excel reports positive $t$ and two-tail $p=0.084$. For the agreeing right-tailed alternative, what is the one-tail $p$?", o:["$0.021$","$0.042$","$0.084$","$0.168$"], a:1, e:"The observed sign agrees with the alternative, so halve the two-sided value: $0.084/2=0.042$." },
+    { q:"When is the pooled two-sample $t$ procedure appropriate?", o:["The samples are paired","Both population variances are known","Independent normal samples with equal population variances","Both sample sizes equal $1$"], a:2, e:"Pooling estimates one common variance, so it requires independent samples and the equal-variance assumption." }
+  ],
+  regression: [
+    { q:"A model has $SST=80$ and $SSE=20$. Find $R^2$.", o:["$0.20$","$0.25$","$0.75$","$4.00$"], a:2, e:"$R^2=1-SSE/SST=1-20/80=0.75$." },
+    { q:"If $R^2=0.49$ and the fitted slope is negative, what is $r$?", o:["$-0.70$","$-0.49$","$0.49$","$0.70$"], a:0, e:"$|r|=\\sqrt{R^2}=0.70$ and $r$ takes the slope's negative sign." },
+    { q:"A simple regression with $n=22$ has $SSE=60$. What is $MSE$?", o:["$2.73$","$3$","$20$","$60$"], a:1, e:"Simple regression uses $n-2=20$ error degrees of freedom: $MSE=60/20=3$." },
+    { q:"The slope test gives $t=-2.5$. What is the regression $F$ statistic?", o:["$-6.25$","$-2.5$","$2.5$","$6.25$"], a:3, e:"With one predictor, $F=t^2=(-2.5)^2=6.25$." },
+    { q:"A $\\chi^2$ goodness-of-fit test has $6$ final categories and estimates $2$ parameters from the sample. Find $df$.", o:["$2$","$3$","$4$","$5$"], a:1, e:"$df=k-1-m=6-1-2=3$." }
+  ]
+};
+
 const memoryCards = [
   ["What is the union formula?", "$P(A\\cup B)=P(A)+P(B)-P(A\\cap B)$. Subtract the overlap once."],
   ["Fastest route to “at least one”?", "Use the complement: $1-P(\\text{none})$."],
@@ -172,6 +231,8 @@ const state = {
   quizBest: Number(localStorage.getItem("statace_quizBest") || 0),
   reviewed: Number(localStorage.getItem("statace_reviewed") || 0),
   memoryIndex: Number(localStorage.getItem("statace_memoryIndex") || 0),
+  practiceSolved: JSON.parse(localStorage.getItem("statace_practiceSolved") || "[]"),
+  practiceSelections: {},
   sessionAnswers: [], quizIndex: 0, selected: null, examMode: false, timer: null, seconds: 0
 };
 
@@ -183,6 +244,7 @@ function save(){
   localStorage.setItem("statace_quizBest", state.quizBest);
   localStorage.setItem("statace_reviewed", state.reviewed);
   localStorage.setItem("statace_memoryIndex", state.memoryIndex);
+  localStorage.setItem("statace_practiceSolved", JSON.stringify(state.practiceSolved));
 }
 function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast.id); toast.id=setTimeout(()=>t.classList.remove("show"),2200); }
 function typeset(root=app){
@@ -213,14 +275,21 @@ function dashboard(){
 }
 
 function learn(){
-  return `<section class="page">${pageHead("THE CORE PATH","Eight modules. No syllabus tourism.","Each lesson contains only the recognition cues, formulas, and shortcuts that recur in the supplied exams.",`<button class="secondary" onclick="go('sheet')">Open cheat sheet</button>`)}
-  <div class="module-list">${modules.map((m,i)=>`<button class="module-row ${state.completed.includes(m.id)?'done':''}" onclick="openLesson('${m.id}')"><span class="module-number">${state.completed.includes(m.id)?'✓':m.n}</span><span class="module-copy"><h3>${m.title}</h3><p>${m.summary}</p></span><span class="module-meta">${m.time} min · ${m.weight}</span><span class="module-arrow">→</span></button>`).join("")}</div></section>`;
+  return `<section class="page">${pageHead("THE CORE PATH","Eight modules. Forty applications.","Learn the recurring move, then apply it immediately in five focused exercises before moving on.",`<button class="secondary" onclick="go('sheet')">Open cheat sheet</button>`)}
+  <div class="module-list">${modules.map(m=>{const solved=state.practiceSolved.filter(k=>k.startsWith(`${m.id}:`)).length;return `<button class="module-row ${state.completed.includes(m.id)?'done':''}" onclick="openLesson('${m.id}')"><span class="module-number">${state.completed.includes(m.id)?'✓':m.n}</span><span class="module-copy"><h3>${m.title}</h3><p>${m.summary}</p></span><span class="module-meta">${solved}/5 exercises · ${m.weight}</span><span class="module-arrow">→</span></button>`}).join("")}</div></section>`;
+}
+
+function practiceBlock(moduleId){
+  const bank=practiceBanks[moduleId] || [];
+  const solvedCount=bank.filter((_,i)=>state.practiceSolved.includes(`${moduleId}:${i}`)).length;
+  return `<section class="practice-lab"><div class="practice-head"><div><span class="eyebrow">APPLY IT NOW</span><h2>Practice lab</h2><p>Commit to an answer before revealing the reasoning.</p></div><div class="practice-score"><strong id="practiceScore-${moduleId}">${solvedCount}/${bank.length}</strong><span>mastered</span></div></div><div class="progress-track practice-track"><i id="practiceBar-${moduleId}" style="width:${bank.length?solvedCount/bank.length*100:0}%"></i></div>
+  <div class="practice-list">${bank.map((q,qi)=>{const key=`${moduleId}:${qi}`,solved=state.practiceSolved.includes(key);return `<div class="practice-card ${solved?'solved':''}" id="practice-${moduleId}-${qi}" data-checked="${solved?'true':'false'}" data-correct="${solved?'true':'false'}"><div class="practice-number">${String(qi+1).padStart(2,'0')}</div><div class="practice-content"><span class="tag ${qi<2?'mint':qi<4?'blue':'hot'}">${qi<2?'warm-up':qi<4?'apply':'exam move'}</span><h3>${q.q}</h3><div class="practice-options">${q.o.map((o,oi)=>`<button class="practice-option ${solved&&oi===q.a?'correct':''}" ${solved?'disabled':''} onclick="selectPractice('${moduleId}',${qi},${oi})"><span>${String.fromCharCode(65+oi)}</span>${o}</button>`).join('')}</div><div class="practice-feedback ${solved?'show':''}" id="practiceFeedback-${moduleId}-${qi}"><strong>${solved?'Mastered — here is the move:':''}</strong>${solved?q.e:''}</div><button class="tiny-button practice-check" id="practiceCheck-${moduleId}-${qi}" ${solved?'disabled':''} onclick="checkPractice('${moduleId}',${qi})">${solved?'Mastered ✓':'Check answer'}</button></div></div>`}).join('')}</div></section>`;
 }
 
 function lesson(id){
   const m=modules.find(x=>x.id===id) || modules[0];
   return `<section class="page">${pageHead(`MODULE ${m.n} · ${m.time} MIN`,m.title,m.summary,`<button class="secondary" onclick="go('learn')">← All modules</button>`)}
-  <div class="lesson-layout"><article class="card lesson-body">${m.content}<div class="section-title"><div><span class="eyebrow">LOCK IT IN</span><h2>Ready to move on?</h2></div></div><button class="primary complete-button" onclick="completeModule('${m.id}')">${state.completed.includes(m.id)?'Completed ✓':'Mark complete & continue →'}</button></article>
+  <div class="lesson-layout"><article class="card lesson-body">${m.content}${practiceBlock(m.id)}<div class="section-title"><div><span class="eyebrow">LOCK IT IN</span><h2>Ready to move on?</h2></div></div><button class="primary complete-button" onclick="completeModule('${m.id}')">${state.completed.includes(m.id)?'Completed ✓':'Mark complete & continue →'}</button></article>
   <aside class="lesson-side"><div class="rule-card"><span class="eyebrow">MEMORIZE THIS RULE</span><strong>${m.rule}</strong></div><div class="card"><h3>Exam protocol</h3><p class="muted">1. Name the variable.<br>2. Name the model.<br>3. Write parameters.<br>4. Compute.<br>5. Sanity-check range and direction.</p></div></aside></div></section>`;
 }
 
@@ -289,6 +358,34 @@ window.go=go;
 window.openLesson=id=>go(`lesson/${id}`);
 window.continueLearning=()=>{ const next=modules.find(m=>!state.completed.includes(m.id))||modules[0]; go(`lesson/${next.id}`); };
 window.completeModule=id=>{ if(!state.completed.includes(id)){state.completed.push(id);save();toast("Module complete — progress saved");} const idx=modules.findIndex(m=>m.id===id); if(idx<modules.length-1) setTimeout(()=>go(`lesson/${modules[idx+1].id}`),350); else setTimeout(()=>go("drill"),350); };
+window.selectPractice=(moduleId,questionIndex,optionIndex)=>{
+  const card=$(`#practice-${moduleId}-${questionIndex}`);
+  if(!card || card.dataset.checked==="true") return;
+  state.practiceSelections[`${moduleId}:${questionIndex}`]=optionIndex;
+  $$(".practice-option",card).forEach((option,i)=>option.classList.toggle("selected",i===optionIndex));
+};
+window.checkPractice=(moduleId,questionIndex)=>{
+  const key=`${moduleId}:${questionIndex}`,card=$(`#practice-${moduleId}-${questionIndex}`),q=practiceBanks[moduleId][questionIndex];
+  if(!card) return;
+  const feedback=$(`#practiceFeedback-${moduleId}-${questionIndex}`),button=$(`#practiceCheck-${moduleId}-${questionIndex}`),options=$$(".practice-option",card);
+  if(card.dataset.checked==="true" && card.dataset.correct!=="true"){
+    card.dataset.checked="false"; delete state.practiceSelections[key];
+    options.forEach(option=>{option.disabled=false;option.classList.remove("selected","correct","wrong")});
+    feedback.classList.remove("show"); feedback.innerHTML=""; button.textContent="Check answer"; return;
+  }
+  const selected=state.practiceSelections[key];
+  if(selected===undefined){toast("Choose an answer first");return;}
+  const correct=selected===q.a; card.dataset.checked="true"; card.dataset.correct=String(correct);
+  options.forEach((option,i)=>{option.disabled=true;if(i===q.a)option.classList.add("correct");else if(i===selected)option.classList.add("wrong")});
+  feedback.innerHTML=`<strong>${correct?'Correct — that move is now yours.':'Close the gap, then retry:'}</strong>${q.e}`; feedback.classList.add("show"); typeset(feedback);
+  if(correct){
+    if(!state.practiceSolved.includes(key))state.practiceSolved.push(key);
+    card.classList.add("solved"); button.textContent="Mastered ✓"; button.disabled=true; save();
+    const total=practiceBanks[moduleId].length,solved=practiceBanks[moduleId].filter((_,i)=>state.practiceSolved.includes(`${moduleId}:${i}`)).length;
+    $(`#practiceScore-${moduleId}`).textContent=`${solved}/${total}`; $(`#practiceBar-${moduleId}`).style.width=`${solved/total*100}%`;
+    if(solved===total)toast("Practice lab mastered — excellent retrieval");
+  } else button.textContent="Try again";
+};
 window.selectOption=i=>{ if(state.selected!==null)return; state.selected=i; $$(".option").forEach((el,j)=>el.classList.toggle("selected",j===i)); };
 window.submitAnswer=()=>{
   const q=questions[state.quizIndex], btn=$("#quizAction");
@@ -314,6 +411,6 @@ function showSearch(){dialog.showModal();searchInput.value="";resultsEl.innerHTM
 $("#searchButton").addEventListener("click",showSearch);
 searchInput.addEventListener("input",()=>{const term=searchInput.value.toLowerCase().trim();if(!term){resultsEl.innerHTML="";return;}const hits=modules.filter(m=>(m.title+m.summary+m.content+m.rule).toLowerCase().includes(term));resultsEl.innerHTML=hits.length?hits.map(m=>`<button class="search-hit" type="button" onclick="document.querySelector('#searchDialog').close();openLesson('${m.id}')"><b>${m.title}</b><small>${m.summary}</small></button>`).join(""):`<p class="muted" style="padding:12px">No match. Try “tail”, “sample size”, or “paired”.</p>`;typeset(resultsEl);});
 document.addEventListener("keydown",e=>{if(e.key==="/"&&!dialog.open&&document.activeElement.tagName!=="INPUT"){e.preventDefault();showSearch();}});
-$("#resetButton").addEventListener("click",()=>{if(confirm("Reset all course progress and scores on this device?")){localStorage.removeItem("statace_completed");localStorage.removeItem("statace_quizBest");localStorage.removeItem("statace_reviewed");localStorage.removeItem("statace_memoryIndex");location.reload();}});
+$("#resetButton").addEventListener("click",()=>{if(confirm("Reset all course progress and scores on this device?")){localStorage.removeItem("statace_completed");localStorage.removeItem("statace_quizBest");localStorage.removeItem("statace_reviewed");localStorage.removeItem("statace_memoryIndex");localStorage.removeItem("statace_practiceSolved");location.reload();}});
 window.addEventListener("hashchange",render);
 render();

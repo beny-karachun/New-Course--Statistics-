@@ -6,11 +6,11 @@ An exam-first interactive course built from the supplied Technion past-exam arch
 
 Open `index.html` in any modern browser. No installation or account is required. An internet connection is needed to load MathJax from its CDN.
 
-Progress, best drill score, and memory-deck reviews are saved locally in the browser. Use the **BP** button in the top-right corner to reset them.
+Progress, mastered lesson exercises, best drill score, and memory-deck reviews are saved locally in the browser. Use the **BP** button in the top-right corner to reset them.
 
 ## What is included
 
-- 8 focused teaching modules
+- 8 focused teaching modules with 40 embedded practice exercises
 - 15-question mixed drill with worked feedback
 - 28-card repeat-until-automatic memory deck
 - 22-minute timed exam sprint
